@@ -1,9 +1,9 @@
-// const commentRouter = require('./comments');
+const commentRouter = require('./comments');
 const movieRouter = require('./movies');
 
 function route(app) {
-    // app.use('/comments', commentRouter);
-    app.use('/movies', movieRouter);
+    app.use('/comments', commentRouter);
+    app.use('/movie', movieRouter);
 
 
 }

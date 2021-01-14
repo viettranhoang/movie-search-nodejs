@@ -4,6 +4,6 @@ const router = express.Router();
 const movieController = require('../controllers/MovieController');
 
 
-router.get('/', movieController.getInfo);
+router.get('/', movieController.info);
 
 module.exports = router;

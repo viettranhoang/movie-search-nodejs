@@ -9,6 +9,38 @@ const fbPageCommentUrl = 'https://www.facebook.com/plugins/feedback.php?href='
 
 class MovieController {
 
+    info(req, res) {
+        var movieLink = req.query.href
+       
+        request(movieLink, (error, response, html) => {
+  
+            if(!error && response.statusCode == 200) {
+                const $ = cheerio.load(html); 
+            
+                const movieName =  $('.movie-title').find('.title-1 a').text()
+                const movieName2 =  $('.movie-title').find('.title-2').text()
+                const movieYear =  $('.movie-title').find('.title-year').text()
+                const movieCountry =  $('.country').text()
+                const movieContent =  $('.content').find('p').text()
+                const moviePoster =  $('.movie-l-img').find('img').attr('src')
+                const facebookLink = $("div.fb-comments").attr('data-href')
+                var fbCommentUrl = fbPageCommentUrl + encodeURI(facebookLink);
+            
+            
+                var movie = {
+                    movieName, movieName2, movieYear, movieContent, movieCountry, moviePoster, facebookLink, fbCommentUrl
+                }
+
+
+                res.json(movie)
+               
+            }
+            else {
+                console.log(error);
+            }
+        });
+    }
+
     getInfo(req, res) {
         var movieLink = req.query.href
        
@@ -35,7 +67,7 @@ class MovieController {
                 getFbCommentId(pluginCommentUrl)
                     .then(fbId => getComments(fbId))
                     .then(comments => res.send(comments))
-                    .catch(erroe => console.log(error))
+                    .catch(error => console.log(error))
                
             }
             else {
