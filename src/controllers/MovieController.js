@@ -13,7 +13,7 @@ const searchUrl = 'http://www.phimmoizz.net/tim-kiem/'
 class MovieController {
 
     async search(req, res) {
-        const pageUrl = searchUrl + 'tran chien' + '/'
+        const pageUrl = searchUrl + req.query.q + '/'
 
         console.log(pageUrl);
         
@@ -102,6 +102,7 @@ async function crawlPage(pageUrl) {
             };
         });
     } catch (error) {
+        console.log(error);
         return 'error'
     }
     
