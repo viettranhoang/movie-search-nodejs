@@ -6,6 +6,8 @@ const qs = require('qs');
 
 const fbPageCommentUrl = 'https://www.facebook.com/plugins/feedback.php?href='
 
+const movieFilmUrl = 'http://www.phimmoizz.net/phim-le/'
+
 
 class MovieController {
 
@@ -46,8 +48,46 @@ class MovieController {
             console.log(error);
             res.send(error)
         })
-    
     }
+
+    async crawl(req, res) {
+        var movieLink = movieFilmUrl
+
+        var totalMovies = []
+
+        for(var i = 0; i < 100; i++) {
+            if(i != 0) {
+                movieLink = movieFilmUrl + `page-${i}.html`
+            }
+            const result = await crawlPage(movieLink);
+            const arr = totalMovies
+            totalMovies = arr.concat(result)
+            console.log(`crawled page ${i}`);
+        }
+        
+        res.send(totalMovies)
+    }
+
 }
 
 module.exports = new MovieController();
+
+async function crawlPage(pageUrl) {
+    const response = await axios.get(pageUrl)
+    
+    const $ = cheerio.load(response.data); 
+    const movies = [];
+
+    $('.movie-item').each(function (i, elem) {
+        var name = $(this).find('.movie-title-1').text()
+        var globalName = $(this).find('.movie-title-2').text()
+        var url = $(this).find('a').attr('href')
+        var thumbString = $(this).find('.movie-thumbnail').attr('style')
+        var thumb = thumbString.substring(thumbString.indexOf('(') + 1, thumbString.indexOf(')'))
+        movies[i] = {
+            name, globalName, url, thumb
+        };
+    });
+
+    return movies
+}

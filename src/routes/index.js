@@ -3,7 +3,7 @@ const movieRouter = require('./movies');
 
 function route(app) {
     app.use('/comments', commentRouter);
-    app.use('/movie', movieRouter);
+    app.use('/movies', movieRouter);
 
 
 }
