@@ -17,26 +17,35 @@ class MovieController {
             if(!error && response.statusCode == 200) {
                 const $ = cheerio.load(html); 
             
-                const movieName =  $('.movie-title').find('.title-1 a').text()
-                const movieName2 =  $('.movie-title').find('.title-2').text()
-                const movieYear =  $('.movie-title').find('.title-year').text()
-                const movieCountry =  $('.country').text()
-                const movieContent =  $('.content').find('p').text()
-                const moviePoster =  $('.movie-l-img').find('img').attr('src')
+                const name =  $('.movie-title').find('.title-1 a').text()
+                const globalName =  $('.movie-title').find('.title-2').text()
+                const year =  $('.movie-title').find('.title-year').text()
+                const imdb =  $('dd.movie-dd.imdb').text()
+                const numberOfVotes =  $('dt.movie-dt.hidden').nextUntil('dt.movie-dt').text();
+                const country = 
+                    $('.country')
+                        .map(function (i, el) {
+                            // this === el
+                            return $(this).text();
+                        })
+                        .get()
+                        .join(', ');
+                const content =  $('.content').find('p').text()
+                const poster =  $('.movie-l-img').find('img').attr('src')
+                const trailerUrl = $('.btn-film-trailer').attr('data-videourl')
                 const facebookLink = $("div.fb-comments").attr('data-href')
                 var fbCommentUrl = fbPageCommentUrl + encodeURI(facebookLink);
             
             
                 var movie = {
-                    movieName, movieName2, movieYear, movieContent, movieCountry, moviePoster, facebookLink, fbCommentUrl
+                    name, globalName, year, imdb, numberOfVotes, content, country, poster, trailerUrl, facebookLink, fbCommentUrl
                 }
 
-
                 res.json(movie)
-               
             }
             else {
                 console.log(error);
+                res.send(error)
             }
         });
     }
