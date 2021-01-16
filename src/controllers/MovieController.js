@@ -7,9 +7,20 @@ const qs = require('qs');
 const fbPageCommentUrl = 'https://www.facebook.com/plugins/feedback.php?href='
 
 const movieFilmUrl = 'http://www.phimmoizz.net/phim-le/'
+const searchUrl = 'http://www.phimmoizz.net/tim-kiem/'
 
 
 class MovieController {
+
+    async search(req, res) {
+        const pageUrl = searchUrl + 'tran chien' + '/'
+
+        console.log(pageUrl);
+        
+        const result = await crawlPage(pageUrl);
+        
+        res.send(result)
+    }
 
     info(req, res) {
         var movieLink = req.query.href
@@ -73,21 +84,27 @@ class MovieController {
 module.exports = new MovieController();
 
 async function crawlPage(pageUrl) {
-    const response = await axios.get(pageUrl)
-    
-    const $ = cheerio.load(response.data); 
     const movies = [];
 
-    $('.movie-item').each(function (i, elem) {
-        var name = $(this).find('.movie-title-1').text()
-        var globalName = $(this).find('.movie-title-2').text()
-        var url = $(this).find('a').attr('href')
-        var thumbString = $(this).find('.movie-thumbnail').attr('style')
-        var thumb = thumbString.substring(thumbString.indexOf('(') + 1, thumbString.indexOf(')'))
-        movies[i] = {
-            name, globalName, url, thumb
-        };
-    });
+    try {
+        const response = await axios.get(pageUrl)
+    
+        const $ = cheerio.load(response.data); 
+
+        $('.movie-item').each(function (i, elem) {
+            var name = $(this).find('.movie-title-1').text()
+            var globalName = $(this).find('.movie-title-2').text()
+            var url = $(this).find('a').attr('href')
+            var thumbString = $(this).find('.movie-thumbnail').attr('style')
+            var thumb = thumbString.substring(thumbString.indexOf('(') + 1, thumbString.indexOf(')'))
+            movies[i] = {
+                name, globalName, url, thumb
+            };
+        });
+    } catch (error) {
+        return 'error'
+    }
+    
 
     return movies
 }
