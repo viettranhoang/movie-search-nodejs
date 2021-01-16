@@ -1,21 +1,14 @@
 const express = require('express')
-const axios = require('axios')
-const qs = require('qs');
-
-const Comment = require('../src/models/Comment');
+const db = require('./config/db');
 
 const app = express();
 
 const port = process.env.PORT || 3000;
 
+db.connect();
+
 const route = require('./routes');
 route(app);
-
-const data = { 
-    __a: 1,
-    fb_dtsg: 'AQHB8W_NMbKo:AQFyeC1Bq6bq',
-    limit: 50,
- };
 
 
 app.get('/', function (req, res) {

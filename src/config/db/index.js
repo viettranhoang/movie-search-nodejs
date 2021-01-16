@@ -41,4 +41,4 @@ const connectWithRetry = function () {
     );
 };
 
-module.exports = { connectWithRetry };
+module.exports = { connect };
