@@ -96,9 +96,9 @@ async function crawlPage(pageUrl) {
             var globalName = $(this).find('.movie-title-2').text()
             var url = $(this).find('a').attr('href')
             var thumbString = $(this).find('.movie-thumbnail').attr('style')
-            var thumb = thumbString.substring(thumbString.indexOf('(') + 1, thumbString.indexOf(')'))
+            var poster = thumbString.substring(thumbString.indexOf('(') + 1, thumbString.indexOf(')'))
             movies[i] = {
-                name, globalName, url, thumb
+                name, globalName, url, poster
             };
         });
     } catch (error) {
