@@ -3,17 +3,18 @@ const request = require('request-promise');
 const axios = require('axios')
 const qs = require('qs');
 
+const fbPageCommentUrl = 'https://www.facebook.com/plugins/feedback.php?href='
+
 class CommentController {
 
     getComments(req, res) {
-        const fbCommentUrl = req.query.href
+        const fbCommentUrl = fbPageCommentUrl + req.query.href
 
         getFbCommentId(fbCommentUrl)
         .then(fbId => getComments(fbId))
         .then(comments => res.send(comments))
         .catch(error => console.log(error))
     }
-
 }
 
 function getFbCommentId(pluginCommentUrl) {
@@ -37,7 +38,6 @@ function getComments(fbId) {
 
     const data = { 
         __a: 1,
-        fb_dtsg: 'AQE9eijzsAw5:AQFqRpyNADSI',
         limit: 50,
      };
 
@@ -46,8 +46,6 @@ function getComments(fbId) {
             method: 'post',
             url: `https://www.facebook.com/plugins/comments/async/${fbId}/pager/reverse_time/`,
             data: qs.stringify(data),
-            headers: {
-                'cookie': 'dpr=2; sb=KjbMX9sq5tMUuqlMqFGD7kDz; datr=KjbMX6NAFGyBffAUIbXPfEW0; c_user=100004548421879; spin=r.1003186793_b.trunk_t.1610723498_s.1_v.2_; xs=15%3A613zlbtOIs9_Yg%3A2%3A1607275256%3A10982%3A6337%3A%3AAcXzVeEYehdL9IEbqozNmNXvP_48M6KPYnOMNXw9v5Y; fr=1bmBv2H35ouJJ5OYL.AWWHiMO3DmWnEi_SKJU5sIjGeIw.BfzDYq.e_.AAA.0.0.BgAoec.AWW9_FWQGss'},
             })
             .then(function (response) {
                 var data = response.data.replace("for (;;);", "");
