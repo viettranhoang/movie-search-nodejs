@@ -9,6 +9,8 @@ const fbPageCommentUrl = 'https://www.facebook.com/plugins/feedback.php?href='
 const movieFilmUrl = 'http://www.phimmoizz.net/phim-le/'
 const searchUrl = 'http://www.phimmoizz.net/tim-kiem/'
 
+const hostPhimmoizz = "http://phimmoizz.net/"
+
 
 class MovieController {
 
@@ -94,11 +96,12 @@ async function crawlPage(pageUrl) {
         $('.movie-item').each(function (i, elem) {
             var name = $(this).find('.movie-title-1').text()
             var globalName = $(this).find('.movie-title-2').text()
-            var url = $(this).find('a').attr('href')
+            var url = hostPhimmoizz + $(this).find('a').attr('href')
             var thumbString = $(this).find('.movie-thumbnail').attr('style')
             var poster = thumbString.substring(thumbString.indexOf('(') + 1, thumbString.indexOf(')'))
+            var posterLarge = poster.replace(".thumb.", ".large.")
             movies[i] = {
-                name, globalName, url, poster
+                name, globalName, url, posterLarge
             };
         });
     } catch (error) {
