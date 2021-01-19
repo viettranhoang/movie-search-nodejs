@@ -98,10 +98,10 @@ async function crawlPage(pageUrl) {
             var globalName = $(this).find('.movie-title-2').text()
             var url = hostPhimmoizz + $(this).find('a').attr('href')
             var thumbString = $(this).find('.movie-thumbnail').attr('style')
-            var poster = thumbString.substring(thumbString.indexOf('(') + 1, thumbString.indexOf(')'))
-            var posterLarge = poster.replace(".thumb.", ".large.")
+            var thumb = thumbString.substring(thumbString.indexOf('(') + 1, thumbString.indexOf(')'))
+            var poster = thumb.replace(".thumb.", ".large.")
             movies[i] = {
-                name, globalName, url, posterLarge
+                name, globalName, url, poster
             };
         });
     } catch (error) {
