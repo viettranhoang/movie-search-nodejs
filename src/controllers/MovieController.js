@@ -33,9 +33,9 @@ class MovieController {
             
             const name =  $('.movie-title').find('.title-1 a').text()
             const globalName =  $('.movie-title').find('.title-2').text()
-            const year =  $('.movie-title').find('.title-year').text()
+            const year =  $('.movie-title').find('.title-year').text().trim().replace('(', '').replace(')', '')
             const imdb =  $('dd.movie-dd.imdb').text()
-            const numberOfVotes =  $('dt.movie-dt.hidden').nextUntil('dt.movie-dt').text();
+            var numberOfVotes = $('dl.movie-dl').find('.movie-dd').eq(2).text().trim().replace('(', '').replace(')', '')
             const country = 
                 $('.country')
                     .map(function (i, el) {
