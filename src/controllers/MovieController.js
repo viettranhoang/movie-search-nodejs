@@ -36,6 +36,7 @@ class MovieController {
             const year =  $('.movie-title').find('.title-year').text().trim().replace('(', '').replace(')', '')
             const imdb =  $('dd.movie-dd.imdb').text()
             var numberOfVotes = $('dl.movie-dl').find('.movie-dd').eq(2).text().trim().replace('(', '').replace(')', '')
+            if(!numberOfVotes.includes('votes')) numberOfVotes = 'IMDb'
             const country = 
                 $('.country')
                     .map(function (i, el) {
