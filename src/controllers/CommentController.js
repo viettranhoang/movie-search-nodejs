@@ -15,11 +15,11 @@ class CommentController {
             var fbId = await getFbCommentId(fbCommentUrl)
             var comments = await getComments(fbId)
 
-            var fbIdOld = await getFbCommentId(fbCommentUrlOld)
-            var oldComments = await getComments(fbIdOld)
+            // var fbIdOld = await getFbCommentId(fbCommentUrlOld)
+            // var oldComments = await getComments(fbIdOld)
 
-            var result = comments.concat(oldComments)
-            res.send(result)
+            // var result = comments.concat(oldComments)
+            res.send(comments)
         } catch (error) {
             console.log(error)
             res.send("")
