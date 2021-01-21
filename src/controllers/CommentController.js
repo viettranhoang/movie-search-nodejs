@@ -11,14 +11,20 @@ class CommentController {
         const fbCommentUrl = fbPageCommentUrl + req.query.href
         const fbCommentUrlOld = fbPageCommentUrl + req.query.movieUrl.replace('zz', '')
 
-        var fbId = await getFbCommentId(fbCommentUrl)
-        var comments = await getComments(fbId)
+        try {
+            var fbId = await getFbCommentId(fbCommentUrl)
+            var comments = await getComments(fbId)
 
-        var fbIdOld = await getFbCommentId(fbCommentUrlOld)
-        var oldComments = await getComments(fbIdOld)
+            var fbIdOld = await getFbCommentId(fbCommentUrlOld)
+            var oldComments = await getComments(fbIdOld)
 
-        var result = oldComments.concat(comments)
-        res.send(result)
+            var result = comments.concat(oldComments)
+            res.send(result)
+        } catch (error) {
+            console.log(error)
+            res.send("")
+        }
+        
         // getFbCommentId(fbCommentUrl)
         // .then(fbId => getComments(fbId))
         // .then(comments => res.send(comments))
@@ -47,7 +53,7 @@ function getComments(fbId) {
 
     const data = { 
         __a: 1,
-        limit: 3,
+        limit: 200,
      };
 
     return new Promise((resolve, reject) => {
