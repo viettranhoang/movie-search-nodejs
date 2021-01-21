@@ -7,13 +7,22 @@ const fbPageCommentUrl = 'https://www.facebook.com/plugins/feedback.php?href='
 
 class CommentController {
 
-    getComments(req, res) {
+    async getComments(req, res) {
         const fbCommentUrl = fbPageCommentUrl + req.query.href
+        const fbCommentUrlOld = fbPageCommentUrl + req.query.movieUrl.replace('zz', '')
 
-        getFbCommentId(fbCommentUrl)
-        .then(fbId => getComments(fbId))
-        .then(comments => res.send(comments))
-        .catch(error => console.log(error))
+        var fbId = await getFbCommentId(fbCommentUrl)
+        var comments = await getComments(fbId)
+
+        var fbIdOld = await getFbCommentId(fbCommentUrlOld)
+        var oldComments = await getComments(fbIdOld)
+
+        var result = oldComments.concat(comments)
+        res.send(result)
+        // getFbCommentId(fbCommentUrl)
+        // .then(fbId => getComments(fbId))
+        // .then(comments => res.send(comments))
+        // .catch(error => console.log(error))
     }
 }
 
@@ -38,7 +47,7 @@ function getComments(fbId) {
 
     const data = { 
         __a: 1,
-        limit: 200,
+        limit: 3,
      };
 
     return new Promise((resolve, reject) => {
@@ -74,28 +83,6 @@ function getComments(fbId) {
                         arr.push(comment)
                     }
                 }
-
-    
-                // for (const key in json) {
-                //     if (Object.hasOwnProperty.call(json, key)) {
-                //         const element = json[key];
-                //         if(element['type'] == 'comment') {
-                        
-                //             var authorId = element['authorID']
-                //             var comment = {
-                //                 authorId: authorId,
-                //                 authorName: json[authorId]['name'],
-                //                 authorThumb: json[authorId]['thumbSrc'],
-                //                 authorUri: json[authorId]['uri'],
-                //                 content: element['body']['text'],
-                //                 timestamp: element['timestamp']['time'],
-                //                 filmId: element['targetID'],
-                //             };
-        
-                //             arr.push(comment)
-                //         }
-                //     }
-                // }
                 resolve(arr)
             })
             .catch(function (error) {
