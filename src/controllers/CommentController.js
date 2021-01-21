@@ -38,7 +38,7 @@ function getComments(fbId) {
 
     const data = { 
         __a: 1,
-        limit: 50,
+        limit: 200,
      };
 
     return new Promise((resolve, reject) => {
@@ -50,29 +50,52 @@ function getComments(fbId) {
             .then(function (response) {
                 var data = response.data.replace("for (;;);", "");
                 var json = JSON.parse(data)['payload']['idMap'];
-        
+                
                 var arr = [];
-    
-                for (const key in json) {
-                    if (Object.hasOwnProperty.call(json, key)) {
-                        const element = json[key];
-                        if(element['type'] == 'comment') {
-                        
-                            var authorId = element['authorID']
-                            var comment = {
-                                authorId: authorId,
-                                authorName: json[authorId]['name'],
-                                authorThumb: json[authorId]['thumbSrc'],
-                                authorUri: json[authorId]['uri'],
-                                content: element['body']['text'],
-                                timestamp: element['timestamp']['time'],
-                                filmId: element['targetID'],
-                            };
-        
-                            arr.push(comment)
-                        }
+
+
+                const commentIds = JSON.parse(data)['payload']['commentIDs'];
+                for (const key in commentIds) {
+                    if (Object.hasOwnProperty.call(commentIds, key)) {
+                        const commentId = commentIds[key];
+
+                        const commentJson = json[commentId]
+                        var authorId = commentJson['authorID']
+                        var comment = {
+                            authorId: authorId,
+                            authorName: json[authorId]['name'],
+                            authorThumb: json[authorId]['thumbSrc'],
+                            authorUri: json[authorId]['uri'],
+                            content: commentJson['body']['text'],
+                            timestamp: commentJson['timestamp']['time'],
+                            filmId: commentJson['targetID'],
+                        };
+
+                        arr.push(comment)
                     }
                 }
+
+    
+                // for (const key in json) {
+                //     if (Object.hasOwnProperty.call(json, key)) {
+                //         const element = json[key];
+                //         if(element['type'] == 'comment') {
+                        
+                //             var authorId = element['authorID']
+                //             var comment = {
+                //                 authorId: authorId,
+                //                 authorName: json[authorId]['name'],
+                //                 authorThumb: json[authorId]['thumbSrc'],
+                //                 authorUri: json[authorId]['uri'],
+                //                 content: element['body']['text'],
+                //                 timestamp: element['timestamp']['time'],
+                //                 filmId: element['targetID'],
+                //             };
+        
+                //             arr.push(comment)
+                //         }
+                //     }
+                // }
                 resolve(arr)
             })
             .catch(function (error) {
