@@ -49,11 +49,10 @@ class MovieController {
             const poster =  $('.movie-l-img').find('img').attr('src')
             const trailerUrl = $('.btn-film-trailer').attr('data-videourl')
             const facebookLink = $("div.fb-comments").attr('data-href')
-            var fbCommentUrl = fbPageCommentUrl + encodeURI(facebookLink);
         
         
             var movie = {
-                name, globalName, year, imdb, numberOfVotes, content, country, poster, trailerUrl, facebookLink, fbCommentUrl, movieLink
+                name, globalName, year, imdb, numberOfVotes, content, country, poster, trailerUrl, facebookLink, movieLink
             }
 
             res.json(movie)
@@ -97,12 +96,12 @@ async function crawlPage(pageUrl) {
         $('.movie-item').each(function (i, elem) {
             var name = $(this).find('.movie-title-1').text()
             var globalName = $(this).find('.movie-title-2').text()
-            var url = hostPhimmoizz + $(this).find('a').attr('href')
+            var movieLink = hostPhimmoizz + $(this).find('a').attr('href')
             var thumbString = $(this).find('.movie-thumbnail').attr('style')
             var thumb = thumbString.substring(thumbString.indexOf('(') + 1, thumbString.indexOf(')'))
             var poster = thumb.replace(".thumb.", ".large.")
             movies[i] = {
-                name, globalName, url, poster
+                name, globalName, movieLink, poster
             };
         });
     } catch (error) {
