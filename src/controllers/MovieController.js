@@ -53,7 +53,7 @@ class MovieController {
         
         
             var movie = {
-                name, globalName, year, imdb, numberOfVotes, content, country, poster, trailerUrl, facebookLink, fbCommentUrl
+                name, globalName, year, imdb, numberOfVotes, content, country, poster, trailerUrl, facebookLink, fbCommentUrl, movieLink
             }
 
             res.json(movie)
