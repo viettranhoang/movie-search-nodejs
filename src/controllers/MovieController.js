@@ -15,7 +15,7 @@ const hostPhimmoizz = "http://phimmoizz.net/"
 class MovieController {
 
     async search(req, res) {
-        const pageUrl = searchUrl + req.query.q + '/'
+        const pageUrl = searchUrl + encodeURI(req.query.q) + '/'
 
         console.log(pageUrl);
         

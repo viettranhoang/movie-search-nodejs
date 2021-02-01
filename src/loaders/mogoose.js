@@ -1,13 +1,11 @@
-const mongoose = require('mongoose');
 
-const dbHost = process.env.DB_HOST || 'localhost';
-const dbPort = process.env.DB_PORT || 27017;
-const dbName = process.env.DB_NAME || 'my_db_name';
-const mongoUrl = `mongodb://${dbHost}:${dbPort}/${dbName}`;
+const mongoose = require('mongoose');
+const { databaseUrl } = require('../config');
 
 async function connect() {
+    console.log(databaseUrl);
     try {
-        await mongoose.connect(mongoUrl, {
+        await mongoose.connect(databaseUrl, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false,
@@ -22,7 +20,7 @@ async function connect() {
 const connectWithRetry = function () {
     // when using with docker, at the time we up containers. Mongodb take few seconds to starting, during that time NodeJS server will try to connect MongoDB until success.
     return mongoose.connect(
-        mongoUrl,
+        databaseUrl,
         {
             useNewUrlParser: true,
             useUnifiedTopology: true,
@@ -41,4 +39,4 @@ const connectWithRetry = function () {
     );
 };
 
-module.exports = { connect };
+module.exports = connect
