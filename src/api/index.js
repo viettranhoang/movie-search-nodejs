@@ -1,5 +1,3 @@
-// const express = require('express');
-// const router = express.Router();
 const commentRouter = require('./routes/comments');
 const movieRouter = require('./routes/movies');
 

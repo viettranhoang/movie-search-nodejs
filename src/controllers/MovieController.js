@@ -2,6 +2,7 @@ const cheerio = require('cheerio');
 const request = require('request-promise');
 const axios = require('axios')
 const qs = require('qs');
+const Movie = require('../models/Movie')
 
 
 const fbPageCommentUrl = 'https://www.facebook.com/plugins/feedback.php?href='
@@ -68,7 +69,7 @@ class MovieController {
 
         var totalMovies = []
 
-        for(var i = 0; i < 100; i++) {
+        for(var i = 100; i < 206; i++) {
             if(i != 0) {
                 movieLink = movieFilmUrl + `page-${i}.html`
             }
@@ -77,8 +78,15 @@ class MovieController {
             totalMovies = arr.concat(result)
             console.log(`crawled page ${i}`);
         }
+
         
-        res.send(totalMovies)
+        const movie = new Movie()
+
+        movie.collection.insertMany(totalMovies, { ordered: false })
+            .catch(err => {
+                console.log(err);
+            })
+        res.send("crawl success!!!")
     }
 
 }
@@ -99,7 +107,7 @@ async function crawlPage(pageUrl) {
             var movieLink = hostPhimmoizz + $(this).find('a').attr('href')
             var thumbString = $(this).find('.movie-thumbnail').attr('style')
             var thumb = thumbString.substring(thumbString.indexOf('(') + 1, thumbString.indexOf(')'))
-            var poster = thumb.replace(".thumb.", ".large.")
+            var poster = thumb.replace(".thumb.", ".medium.")
             movies[i] = {
                 name, globalName, movieLink, poster
             };

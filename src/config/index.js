@@ -13,6 +13,8 @@ const dbName = process.env.DB_NAME || 'my_db_name';
 module.exports = {
   databaseUrl:  `mongodb://${dbHost}:${dbPort}/${dbName}`,
 
+  port: parseInt(process.env.PORT, 10),
+
   /**
    * API configs
    */
