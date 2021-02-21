@@ -22,7 +22,7 @@ class MovieController {
         
         // const result = await crawlPage(pageUrl);
 
-        
+
         const q = req.query.q
         Movie.find({
             $or: [
@@ -92,18 +92,20 @@ class MovieController {
     }
 
     async crawl(req, res) {
+        const fromPage = req.query.from - 1
+        const toPage = req.query.to
         var movieLink = movieFilmUrl
 
         var totalMovies = []
 
-        for(var i = 1; i < 100; i++) {
-            if(i != 0) {
-                movieLink = movieFilmUrl + `page-${i}.html`
-            }
+        for(var i = fromPage; i < toPage; i++) {
+            
+            movieLink = movieFilmUrl + `page-${i + 1}.html`
+            
             const result = await crawlPage(movieLink);
             const arr = totalMovies
             totalMovies = arr.concat(result)
-            console.log(`crawled page ${i}`);
+            console.log(`crawled page ${i + 1}`);
         }
 
         
