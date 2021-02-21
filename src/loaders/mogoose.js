@@ -1,11 +1,11 @@
 
 const mongoose = require('mongoose');
-const { databaseUrl } = require('../config');
+const { databaseCloudUrl } = require('../config');
 
 async function connect() {
-    console.log(databaseUrl);
+    console.log(databaseCloudUrl);
     try {
-        await mongoose.connect(databaseUrl, {
+        await mongoose.connect(databaseCloudUrl, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false,

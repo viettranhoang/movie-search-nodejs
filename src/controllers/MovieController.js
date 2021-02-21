@@ -16,13 +16,38 @@ const hostPhimmoizz = "http://phimmoizz.net/"
 class MovieController {
 
     async search(req, res) {
-        const pageUrl = searchUrl + encodeURI(req.query.q) + '/'
+        // const pageUrl = searchUrl + encodeURI(req.query.q) + '/'
 
-        console.log(pageUrl);
+        // console.log(pageUrl);
         
-        const result = await crawlPage(pageUrl);
+        // const result = await crawlPage(pageUrl);
+        const q = req.query.q
+        Movie.find({
+            $or: [
+                { name: { $regex: q, $options: "i" } },
+                { globalName: { $regex: q, $options: "i" } },
+            ],
+        })
+        .limit(30)
+        .then((movies) => {
+            res.send(movies)
+        })
+        .catch(err => {
+            console.log(err);
+        })
         
-        res.send(result)
+        // res.send(movies)
+    }
+
+    async trending(req, res) {
+        Movie.find({})
+            .limit(10)
+            .then((movies) => {
+                res.send(movies)
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     info(req, res) {
@@ -69,7 +94,7 @@ class MovieController {
 
         var totalMovies = []
 
-        for(var i = 100; i < 206; i++) {
+        for(var i = 1; i < 100; i++) {
             if(i != 0) {
                 movieLink = movieFilmUrl + `page-${i}.html`
             }
