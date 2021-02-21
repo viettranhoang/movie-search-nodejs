@@ -21,6 +21,8 @@ class MovieController {
         // console.log(pageUrl);
         
         // const result = await crawlPage(pageUrl);
+
+        
         const q = req.query.q
         Movie.find({
             $or: [
