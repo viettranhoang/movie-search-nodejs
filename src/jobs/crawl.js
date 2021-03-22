@@ -10,7 +10,7 @@ const hostPhimmoizz = "http://phimmoizz.net/"
 
 module.exports = async function () {
     try {
-        schedule.scheduleJob('0 0 */3 * * *', function(){
+        schedule.scheduleJob('0 0 */2 * * *', function(){
             console.log('Crawling...');
             crawl()
         });
@@ -26,7 +26,7 @@ async function crawl() {
 
     var totalMovies = []
 
-    for(var i = 0; i < 5; i++) {
+    for(var i = 0; i < 10; i++) {
         
         movieLink = movieFilmUrl + `page-${i + 1}.html`
         
