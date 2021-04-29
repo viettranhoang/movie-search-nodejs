@@ -6,6 +6,7 @@ const Movie = require('../models/Movie')
 
 
 const fbPageCommentUrl = 'https://www.facebook.com/plugins/feedback.php?href='
+const phimmoiFBHref = "http://cmt.phimmoi.link/phim/"
 
 const movieFilmUrl = 'http://www.phimmoizz.net/phim-le/'
 const searchUrl = 'http://www.phimmoizz.net/tim-kiem/'
@@ -90,6 +91,21 @@ class MovieController {
             res.send(error)
         })
     }
+
+    infoTemp(req, res) {
+        var movieLink = req.query.href
+
+        
+        const facebookLink = phimmoiFBHref + movieLink.substring(movieLink.lastIndexOf('-') + 1, movieLink.length)
+    
+    
+        var movie = {
+            facebookLink, movieLink
+        }
+
+        res.json(movie)
+    }
+
 
     async crawl(req, res) {
         const fromPage = req.query.from - 1
