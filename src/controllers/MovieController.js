@@ -13,6 +13,8 @@ const searchUrl = 'http://www.phimmoizz.net/tim-kiem/'
 
 const hostPhimmoizz = "http://phimmoizz.net/"
 
+const googleCacheUrl = "http://webcache.googleusercontent.com/search?vwsrc=0&q=cache:"
+
 
 class MovieController {
 
@@ -55,12 +57,17 @@ class MovieController {
 
     info(req, res) {
         var movieLink = req.query.href
+        var googleCachePhimmoiUrl = googleCacheUrl + movieLink
 
-        axios.get(movieLink)
+        axios.get(googleCachePhimmoiUrl)
         .then(function (response) {
             const $ = cheerio.load(response.data); 
+
             
             const name =  $('.movie-title').find('.title-1 a').text()
+
+            console.log('fsfdsf' + response.data)
+
             const globalName =  $('.movie-title').find('.title-2').text()
             const year =  $('.movie-title').find('.title-year').text().trim().replace('(', '').replace(')', '')
             const imdb =  $('dd.movie-dd.imdb').eq(0).text()
