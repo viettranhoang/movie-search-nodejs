@@ -59,7 +59,7 @@ function getComments(fbId) {
             })
             .then(function (response) {
                 var data = response.data.replace("for (;;);", "");
-                console.log('fb comment data' + data);
+                console.log('fb id '+ fbId + ' comment data' + data);
                 var json = JSON.parse(data)['payload']['idMap'];
                 
                 var arr = [];
