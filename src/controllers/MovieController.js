@@ -13,7 +13,7 @@ const searchUrl = 'http://www.phimmoizz.net/tim-kiem/'
 
 const hostPhimmoizz = "http://phimmoizz.net/"
 
-const googleCacheUrl = "http://webcache.googleusercontent.com/search?vwsrc=0&q=cache:UfQchDUKmpwJ:"
+const googleCacheUrl = "http://webcache.googleusercontent.com/search?vwsrc=0&q=cache:"
 
 
 class MovieController {
@@ -57,7 +57,7 @@ class MovieController {
 
     info(req, res) {
         var movieLink = req.query.href
-        var googleCachePhimmoiUrl = googleCacheUrl + movieLink
+        var googleCachePhimmoiUrl = googleCacheUrl + movieLink.replace('http://', 'www.')
 
         axios.get(googleCachePhimmoiUrl)
         .then(function (response) {
@@ -65,8 +65,6 @@ class MovieController {
 
             
             const name =  $('.movie-title').find('.title-1 a').text()
-
-            console.log('fsfdsf' + response.data)
 
             const globalName =  $('.movie-title').find('.title-2').text()
             const year =  $('.movie-title').find('.title-year').text().trim().replace('(', '').replace(')', '')
