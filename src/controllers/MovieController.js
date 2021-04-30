@@ -13,7 +13,7 @@ const searchUrl = 'http://www.phimmoizz.net/tim-kiem/'
 
 const hostPhimmoizz = "http://phimmoizz.net/"
 
-const googleCacheUrl = "http://webcache.googleusercontent.com/search?vwsrc=0&q=cache:"
+const googleCacheUrl = "http://webcache.googleusercontent.com/search?vwsrc=0&q=cache:UfQchDUKmpwJ:"
 
 
 class MovieController {
