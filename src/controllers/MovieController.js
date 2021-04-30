@@ -1,6 +1,7 @@
 const cheerio = require('cheerio'); 
 const request = require('request-promise');
 const axios = require('axios')
+const iconv = require('iconv-lite');
 const qs = require('qs');
 const Movie = require('../models/Movie')
 
@@ -55,13 +56,15 @@ class MovieController {
             })
     }
 
+    // use iconv.decode(response.data, 'ISO-8859-1') for google cache
+
     info(req, res) {
         var movieLink = req.query.href
         var googleCachePhimmoiUrl = googleCacheUrl + movieLink.replace('http://', 'www.')
 
         axios.get(googleCachePhimmoiUrl)
         .then(function (response) {
-            const $ = cheerio.load(response.data); 
+            const $ = cheerio.load(iconv.decode(response.data, 'ISO-8859-1')); 
 
             
             const name =  $('.movie-title').find('.title-1 a').text()
