@@ -49,47 +49,53 @@ function getComments(fbId) {
     const data = { 
         __a: 1,
         limit: 200,
-     };
+    };
+
+    const headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'User-Agent': 'PostmanRuntime/7.26.8'
+    }
 
     return new Promise((resolve, reject) => {
         axios({
             method: 'post',
             url: `https://www.facebook.com/plugins/comments/async/${fbId}/pager/reverse_time/`,
             data: qs.stringify(data),
-            })
-            .then(function (response) {
-                var data = response.data.replace("for (;;);", "");
-                console.log('fb id '+ fbId + ' comment data' + data);
-                var json = JSON.parse(data)['payload']['idMap'];
-                
-                var arr = [];
+            headers: headers
+        })
+        .then(function (response) {
+            var data = response.data.replace("for (;;);", "");
+            console.log('fb id '+ fbId + ' comment data' + data);
+            var json = JSON.parse(data)['payload']['idMap'];
+            
+            var arr = [];
 
 
-                const commentIds = JSON.parse(data)['payload']['commentIDs'];
-                for (const key in commentIds) {
-                    if (Object.hasOwnProperty.call(commentIds, key)) {
-                        const commentId = commentIds[key];
+            const commentIds = JSON.parse(data)['payload']['commentIDs'];
+            for (const key in commentIds) {
+                if (Object.hasOwnProperty.call(commentIds, key)) {
+                    const commentId = commentIds[key];
 
-                        const commentJson = json[commentId]
-                        var authorId = commentJson['authorID']
-                        var comment = {
-                            authorId: authorId,
-                            authorName: json[authorId]['name'],
-                            authorThumb: json[authorId]['thumbSrc'],
-                            authorUri: json[authorId]['uri'],
-                            content: commentJson['body']['text'],
-                            timestamp: commentJson['timestamp']['time'],
-                            filmId: commentJson['targetID'],
-                        };
+                    const commentJson = json[commentId]
+                    var authorId = commentJson['authorID']
+                    var comment = {
+                        authorId: authorId,
+                        authorName: json[authorId]['name'],
+                        authorThumb: json[authorId]['thumbSrc'],
+                        authorUri: json[authorId]['uri'],
+                        content: commentJson['body']['text'],
+                        timestamp: commentJson['timestamp']['time'],
+                        filmId: commentJson['targetID'],
+                    };
 
-                        arr.push(comment)
-                    }
+                    arr.push(comment)
                 }
-                resolve(arr)
-            })
-            .catch(function (error) {
-                reject(error)
-            });
+            }
+            resolve(arr)
+        })
+        .catch(function (error) {
+            reject(error)
+        });
     })
 }
 
