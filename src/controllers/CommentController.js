@@ -48,7 +48,7 @@ function getComments(fbId) {
 
     const data = { 
         __a: 1,
-        limit: 200,
+        limit: 40,
     };
 
     const headers = {
