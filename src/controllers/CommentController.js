@@ -8,12 +8,16 @@ const fbPageCommentUrl = 'https://www.facebook.com/plugins/feedback.php?href='
 class CommentController {
 
     async getComments(req, res) {
-        const fbCommentUrl = fbPageCommentUrl + req.query.href
+        const newUrl = req.query.href // http://cmt.phimmoi.link/phim/12281/
+        const fbCommentUrl = fbPageCommentUrl + newUrl
         const fbCommentUrlOld = fbPageCommentUrl + req.query.movieUrl.replace('zz', '')
 
         try {
-            var fbId = await getFbCommentId(fbCommentUrl)
-            var comments = await getComments(fbId)
+            var comments = [];
+            if(newUrl) {
+                var fbId = await getFbCommentId(fbCommentUrl)
+                var comments = await getComments(fbId)
+            }
 
             var fbIdOld = await getFbCommentId(fbCommentUrlOld)
             var oldComments = await getComments(fbIdOld)
